@@ -31,7 +31,7 @@ def model_predictions(dataset):
         model = pickle.load(file)
 
     preds = model.predict(X)
-    return preds
+    return y, preds, model
 
 ##################Function to get summary statistics
 def dataframe_summary():
@@ -74,7 +74,7 @@ def outdated_packages_list():
 
 if __name__ == '__main__':
     test_data = pd.read_csv(os.path.join(test_data_path, test_file_name))
-    preds = model_predictions(test_data)
+    y, preds, model = model_predictions(test_data)
     dataframe_summary()
     times = execution_time()
     outdated_packages_list()
