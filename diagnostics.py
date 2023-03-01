@@ -40,9 +40,8 @@ def dataframe_summary():
     means = training_data.mean
     medians = training_data.median
     stds = training_data.std
-    print(means)
-    print(medians)
-    print(stds)
+    
+    return [means, medians, stds]
 
 ##################Function to get missing data
 def missing_data():
@@ -69,18 +68,13 @@ def execution_time():
 def outdated_packages_list():
     #get a list of dependencies
     installed = subprocess.check_output(['pip', 'list', '-o'])
-    print(installed)
+    # print(installed)
+    return installed
 
 
 if __name__ == '__main__':
     test_data = pd.read_csv(os.path.join(test_data_path, test_file_name))
     y, preds, model = model_predictions(test_data)
-    dataframe_summary()
+    statistics_summary = dataframe_summary()
     times = execution_time()
-    outdated_packages_list()
-
-
-
-
-
-    
+    installed = outdated_packages_list()

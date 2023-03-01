@@ -44,6 +44,7 @@ def score_model():
     for element in all_records:
         test_score_file.write(str(element) + ' ')
     test_score_file.write('\n')
+    return f1score
     
 if __name__ == '__main__':
-    score_model()
+    f1score = score_model()
