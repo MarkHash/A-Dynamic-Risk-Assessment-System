@@ -16,7 +16,6 @@ with open('config.json','r') as f:
     config = json.load(f) 
 
 dataset_csv_path = os.path.join(config['output_folder_path']) 
-
 prediction_model = None
 
 
@@ -28,21 +27,21 @@ def predict():
     test_data = pd.read_csv(file_location)
 
     y, preds, model = model_predictions(test_data)
-    return preds
+    return str(preds)
 
 #######################Scoring Endpoint
 @app.route("/scoring", methods=['GET','OPTIONS'])
 def scoring():
     #check the score of the deployed model
     f1score = score_model()
-    return f1score
+    return str(f1score)
 
 #######################Summary Statistics Endpoint
 @app.route("/summarystats", methods=['GET','OPTIONS'])
 def summarystats():
     #check means, medians, and modes for each column
     statistics_summary = dataframe_summary()
-    return statistics_summary
+    return str(statistics_summary)
 
 #######################Diagnostics Endpoint
 @app.route("/diagnostics", methods=['GET','OPTIONS'])
@@ -51,7 +50,7 @@ def diagnostics():
     na_percents = missing_data()
     times = execution_time()
     installed = outdated_packages_list()
-    return na_percents, times, installed
+    return str([na_percents, times, installed])
 
 if __name__ == "__main__":    
     app.run(host='0.0.0.0', port=8000, debug=True, threaded=True)
