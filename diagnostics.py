@@ -21,7 +21,6 @@ model_file_name = 'trainedmodel.pkl'
 output_file_name = 'finaldata.csv'
 test_file_name = 'testdata.csv'
 
-
 ##################Function to get model predictions
 def model_predictions(dataset):
     #read the deployed model and a test dataset, calculate predictions
@@ -56,10 +55,10 @@ def missing_data():
 def execution_time():
     #calculate timing of training.py and ingestion.py
     start_time = timeit.default_timer()
-    os.system('python3 ingestion.py')
+    os.system('python ingestion.py')
     ingestion_time = timeit.default_timer() - start_time
     start_time = timeit.default_timer()
-    os.system('python3 training.py')
+    os.system('python training.py')
     training_time = timeit.default_timer() - start_time
 
     return [ingestion_time, training_time]

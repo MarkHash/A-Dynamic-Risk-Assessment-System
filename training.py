@@ -1,12 +1,14 @@
-from flask import Flask, session, jsonify, request
+
 import pandas as pd
 import numpy as np
 import pickle
 import os
+import json
+from flask import Flask, session, jsonify, request
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
-import json
+
 
 ###################Load config.json and get path variables
 with open('config.json','r') as f:
@@ -33,7 +35,6 @@ def train_model():
     #fit the logistic regression to your data
     X = training_data[['lastmonth_activity', 'lastyear_activity', 'number_of_employees']].values.reshape(-1, 3)
     y = training_data['exited'].values.reshape(-1, 1).ravel()
-    print(y)
     model = logit.fit(X, y)
     #write the trained model to your workspace in a file called trainedmodel.pkl
     pickle.dump(model, open(os.path.join(model_path, model_file_name), 'wb'))
