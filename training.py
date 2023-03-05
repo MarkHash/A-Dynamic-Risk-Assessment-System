@@ -22,8 +22,16 @@ model_file_name = 'trainedmodel.pkl'
 
 
 #################Function for training the model
-def train_model():
-    training_data = pd.read_csv(os.path.join(dataset_csv_path, output_file_name))
+def train_model(dataset_path=dataset_csv_path):
+    file_list = os.listdir(dataset_path)
+    training_data = pd.DataFrame()
+    for f in file_list:
+        #check if the file extension is '.csv'
+        if os.path.splitext(f)[1].lower() == '.csv':
+            tmp_data = pd.read_csv(os.path.join(dataset_path, f))
+            training_data = pd.concat([training_data, tmp_data], ignore_index=True)
+    
+    # training_data = pd.read_csv(os.path.join(dataset_path, dataset_file_name))
 
     #use this logistic regression for training
     logit = LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,

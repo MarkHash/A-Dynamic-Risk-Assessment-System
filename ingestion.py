@@ -16,25 +16,28 @@ output_file_name = 'finaldata.csv'
 step_record_name = 'ingestedfiles.txt'
 
 #############Function for data ingestion
-def merge_multiple_dataframe():
+def merge_multiple_dataframe(data_path=input_folder_path):
     """
     Process the data in multiple CSV files and merge into one CSV file
     """
     #check for datasets, compile them together, and write to an output file
-    merged_df = pd.DataFrame()
+    if os.path.isfile(os.path.join(output_folder_path, output_file_name)):
+        merged_df = pd.read_csv(os.path.join(output_folder_path, output_file_name))
+    else:
+        merged_df = pd.DataFrame()
 
-    file_list = os.listdir(input_folder_path)
-    for file in file_list:
+    file_list = os.listdir(data_path)
+    for f in file_list:
         #check if the file extension is '.csv'
-        if os.path.splitext(file)[1].lower() == '.csv':
+        if os.path.splitext(f)[1].lower() == '.csv':
             #read CSV file into dataframe and merge into one
-            df = pd.read_csv(os.path.join(input_folder_path, file))
-            merged_df = merged_df.append(df).reset_index(drop=True)
+            tmp_df = pd.read_csv(os.path.join(data_path, f))
+            merged_df = pd.concat([merged_df, tmp_df], ignore_index=True)
 
             #record the time and file of ingestion
             dateTimeObj = datetime.now()
             time_now = str(dateTimeObj.year) + '/' + str(dateTimeObj.month) + '/' + str(dateTimeObj.day)
-            all_records = [input_folder_path, file, len(df.index), time_now]
+            all_records = [data_path, f, len(tmp_df.index), time_now]
             step_record_file = open(os.path.join(output_folder_path, step_record_name), 'a')
             for element in all_records:
                 step_record_file.write(str(element) + ' ')
