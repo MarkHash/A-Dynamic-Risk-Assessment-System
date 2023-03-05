@@ -24,7 +24,7 @@ matrix_file_name = 'confusionmatrix.png'
 
 
 ##############Function for reporting
-def score_model():
+def report_model(matrix_file=matrix_file_name):
     #calculate a confusion matrix using the test data and the deployed model
     #write the confusion matrix to the workspace
     test_data = pd.read_csv(os.path.join(test_data_path, test_file_name))
@@ -33,8 +33,8 @@ def score_model():
     cm = confusion_matrix(y, preds, labels=model.classes_)
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=model.classes_)
     disp.plot()
-    plt.savefig(os.path.join(output_model_path, matrix_file_name))
+    plt.savefig(os.path.join(output_model_path, matrix_file))
 
 
 if __name__ == '__main__':
-    score_model()
+    report_model()

@@ -17,21 +17,24 @@ model_path = os.path.join(os.getcwd(), config['output_model_path'])
 test_data_path = os.path.join(os.getcwd(), config['test_data_path']) 
 model_file_name = 'trainedmodel.pkl'
 score_file_name = 'latestscore.txt'
+X_columns = ['lastmonth_activity', 'lastyear_activity', 'number_of_employees']
 
 #################Function for model scoring
-def score_model():
+def score_model(trained_model_path=model_path, data_path=test_data_path, model_file=model_file_name):
     #this function should take a trained model, load test data, and calculate an F1 score for the model relative to the test data
     #it should write the result to the latestscore.txt file
-    file_list = os.listdir(test_data_path)
-    for file in file_list:
+    file_list = os.listdir(data_path)
+    test_data = pd.DataFrame()
+    for f in file_list:
         #check if the file extension is '.csv'
-        if os.path.splitext(file)[1].lower() == '.csv':
-            test_data = pd.read_csv(os.path.join(test_data_path, file))
+        if os.path.splitext(f)[1].lower() == '.csv':
+            tmp_data = pd.read_csv(os.path.join(data_path, f))
+            test_data = pd.concat([test_data, tmp_data], ignore_index=True)
 
-    with open(os.path.join(model_path, model_file_name), 'rb')  as file:
-        model = pickle.load(file)
+    with open(os.path.join(trained_model_path, model_file), 'rb')  as f:
+        model = pickle.load(f)
 
-    X = test_data[['lastmonth_activity', 'lastyear_activity', 'number_of_employees']].values.reshape(-1, 3)
+    X = test_data[X_columns].values.reshape(-1, 3)
     y = test_data['exited'].values.reshape(-1, 1).ravel()
     preds = model.predict(X)
     f1score = metrics.f1_score(preds, y)

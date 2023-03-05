@@ -9,8 +9,6 @@ from sklearn.linear_model import LogisticRegression
 import json
 import subprocess
 
-
-
 ##################Load config.json and correct path variable
 with open('config.json','r') as f:
     config = json.load(f) 
