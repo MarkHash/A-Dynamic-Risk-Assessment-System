@@ -4,7 +4,7 @@ import json
 
 #Specify a URL that resolves to your workspace
 # URL = "http://127.0.0.1:8000"
-URL = "http://192.168.1.103:8000"
+URL = "http://192.168.1.101:8000"
 
 with open('config.json','r') as f:
     config = json.load(f)
